@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,30 @@ import { Router } from '@angular/router';
 export class HomePage {
 
   constructor(
+    private actionSheetController: ActionSheetController,
     private router: Router,
   ) {}
 
-  navTo() {
+  async navTo() {
     this.router.navigateByUrl('/sample').then();
+  }
+
+  async createActionSheet() {
+     const actionSheet = await this.actionSheetController.create({
+      header: 'header',
+      translucent: true,
+      buttons: this.setupActionButtons()
+    });
+    actionSheet.present().then();
+  }
+
+  setupActionButtons() {
+    return [
+      {
+        text: 'SAMPLE',
+        icon: 'bar-chart',
+        handler: async () => await this.navTo(),
+      }
+    ];
   }
 }
